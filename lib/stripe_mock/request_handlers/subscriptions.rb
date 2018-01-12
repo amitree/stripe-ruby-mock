@@ -35,7 +35,7 @@ module StripeMock
       def create_customer_subscription(route, method_url, params, headers)
         route =~ method_url
 
-        plan_id = params[:plan].to_s
+        plan_id = (params[:plan] || params[:items][0][:plan]).to_s
         plan = assert_existence :plan, plan_id, plans[plan_id]
 
         customer = assert_existence :customer, $1, customers[$1]
