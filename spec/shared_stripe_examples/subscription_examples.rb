@@ -472,6 +472,18 @@ shared_examples 'Customer Subscriptions' do
       expect(subscription.items.data[0].plan.id).to eq plan.id
       expect(subscription.items.data[1].plan.id).to eq plan2.id
     end
+
+    it "accepts a hash of items" do
+      silver = stripe_helper.create_plan(id: 'silver')
+      customer = Stripe::Customer.create(id: 'test_customer_sub', source: gen_card_tk)
+
+      sub = Stripe::Subscription.create({ items: { '0' => { plan: 'silver' } }, customer: customer.id })
+      sub.delete(at_period_end: true)
+
+      expect(sub.cancel_at_period_end).to be_truthy
+      expect(sub.save).to be_truthy
+      expect(sub.cancel_at_period_end).to be_falsey
+    end
   end
 
   context "updating a subscription" do
