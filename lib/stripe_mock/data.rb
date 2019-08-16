@@ -115,7 +115,7 @@ module StripeMock
         livemode: false,
         delinquent: false,
         discount: nil,
-        account_balance: 0,
+        balance: 0,
         currency: currency,
         sources: {
           object: "list",
